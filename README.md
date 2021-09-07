@@ -18,42 +18,42 @@ In order to add a new product, some data is needed. The whole thing can look lik
 
 ```go
 // Create product body
-body := ProductsBody{
-    Api{
+body := gohood.ProductsBody{
+    gohood.Api{
         AccountName: "",
         AccountPass: "",
-        Items: Items{
-            Item: []Item{},
+        Items: gohood.Items{
+            Item: []gohood.Item{},
         },
     },
 }
 
 // Add new item
-body.Api.Items.Item = append(body.Api.Items.Item, Item{
+body.Api.Items.Item = append(body.Api.Items.Item, gohood.Item{
     ItemMode:    "shopProduct",
     CategoryId:  17055,
     ItemName:    "J&J Marketplace",
     Quantity:    250,
     Condition:   "new",
     Description: "Unsere Software, damit Sie ihr Warenwirtschaftssystem direkt mit einem Marktplatz verbinden können.",
-    Shipmethods: Shipmethods{
-        Shipmethod: []Shipmethod{},
+    Shipmethods: gohood.Shipmethods{
+        Shipmethod: []gohood.Shipmethod{},
     },
     Price:          "0,75",
     SalesTax:       "19",
-    ProductOptions: ProductOptions{},
+    ProductOptions: gohood.ProductOptions{},
     Ean:            "4251209995017",
     Isbn:           "",
     Mpn:            "JJMRTPL2021",
     Manufacturer:   "JJ Ideenschmiede GmbH",
     Weight:         "0,00",
-    Images: Images{
+    Images: gohood.Images{
         ImageUrl: []string{},
     },
 })
 
 // Add shipping methods
-body.Api.Items.Item[0].Shipmethods.Shipmethod = append(body.Api.Items.Item[0].Shipmethods.Shipmethod, Shipmethod{
+body.Api.Items.Item[0].Shipmethods.Shipmethod = append(body.Api.Items.Item[0].Shipmethods.Shipmethod, gohood.Shipmethod{
     Name:  "DHLPacket_nat",
     Value: "5",
 })
@@ -62,7 +62,66 @@ body.Api.Items.Item[0].Shipmethods.Shipmethod = append(body.Api.Items.Item[0].Sh
 body.Api.Items.Item[0].Images.ImageUrl = append(body.Api.Items.Item[0].Images.ImageUrl, "https://lh3.googleusercontent.com/glsgmb/AJtb4XCbjWmNDgametDQMVJo6Oh6Kok2GuoRs59ozCAQMmFl9G2f2PTq6PI0_9GZROeNzO0w13M5A91gArGZ6u-GGHsjPw=w304-h899-rw-no-sc0x00ffffff")
 
 // Add a new product
-product, err := AddProduct(body)
+product, err := gohood.AddProduct(body)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(product)
+}
+```
+
+## Update a product
+
+In order to update a product, the ID of the product is required. Otherwise you can use the entire data identically to the anlgegen of a product.
+
+```go
+// Create product body
+body := gohood.ProductsBody{
+    gohood.Api{
+        AccountName: "",
+        AccountPass: "",
+        Items: gohood.Items{
+            Item: []gohood.Item{},
+        },
+    },
+}
+
+// Add new item
+body.Api.Items.Item = append(body.Api.Items.Item, gohood.Item{
+    ItemId:      12321873,
+	ItemMode:    "shopProduct",
+    CategoryId:  17055,
+    ItemName:    "J&J Marketplace",
+    Quantity:    250,
+    Condition:   "new",
+    Description: "Unsere Software, damit Sie ihr Warenwirtschaftssystem direkt mit einem Marktplatz verbinden können.",
+    Shipmethods: gohood.Shipmethods{
+        Shipmethod: []gohood.Shipmethod{},
+    },
+    Price:          "0,75",
+    SalesTax:       "19",
+    ProductOptions: gohood.ProductOptions{},
+    Ean:            "4251209995017",
+    Isbn:           "",
+    Mpn:            "JJMRTPL2021",
+    Manufacturer:   "JJ Ideenschmiede GmbH",
+    Weight:         "0,00",
+    Images: gohood.Images{
+        ImageUrl: []string{},
+    },
+})
+
+// Add shipping methods
+body.Api.Items.Item[0].Shipmethods.Shipmethod = append(body.Api.Items.Item[0].Shipmethods.Shipmethod, gohood.Shipmethod{
+    Name:  "DHLPacket_nat",
+    Value: "5",
+})
+
+// Add an image
+body.Api.Items.Item[0].Images.ImageUrl = append(body.Api.Items.Item[0].Images.ImageUrl, "https://lh3.googleusercontent.com/glsgmb/AJtb4XCbjWmNDgametDQMVJo6Oh6Kok2GuoRs59ozCAQMmFl9G2f2PTq6PI0_9GZROeNzO0w13M5A91gArGZ6u-GGHsjPw=w304-h899-rw-no-sc0x00ffffff")
+
+// Update a product
+product, err := gohood.UpdateProduct(body)
 if err != nil {
     fmt.Println(err)
 } else {
