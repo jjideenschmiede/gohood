@@ -145,3 +145,44 @@ func AddProduct(body ProductsBody) (ProductsReturn, error) {
 	return decode, nil
 
 }
+
+// UpdateProduct is to update a product
+func UpdateProduct(body ProductsBody) (ProductsReturn, error) {
+
+	// Define body data
+	body.Api.Type = "public"
+	body.Api.Version = "2.0"
+	body.Api.User = body.Api.AccountName
+	body.Api.Password = body.Api.AccountPass
+	body.Api.Function = "itemUpdate"
+
+	// Convert body
+	convert, err := xml.Marshal(body.Api)
+	if err != nil {
+		return ProductsReturn{}, err
+	}
+
+	// Config new request
+	c := Config{convert}
+
+	// Send new request
+	response, err := c.Send()
+	if err != nil {
+		return ProductsReturn{}, err
+	}
+
+	// Close request body
+	defer response.Body.Close()
+
+	// Decode data
+	var decode ProductsReturn
+
+	err = xml.NewDecoder(response.Body).Decode(&decode)
+	if err != nil {
+		return ProductsReturn{}, err
+	}
+
+	// Return data
+	return decode, nil
+
+}
