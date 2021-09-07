@@ -89,7 +89,7 @@ body := gohood.ProductsBody{
 // Add new item
 body.Api.Items.Item = append(body.Api.Items.Item, gohood.Item{
     ItemId:      12321873,
-	ItemMode:    "shopProduct",
+    ItemMode:    "shopProduct",
     CategoryId:  17055,
     ItemName:    "J&J Marketplace",
     Quantity:    250,
