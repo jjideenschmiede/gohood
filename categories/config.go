@@ -15,14 +15,12 @@ import "encoding/xml"
 
 // Api is to set the request
 type Api struct {
-	Type        string `xml:"type,attr,omitempty"`
-	Version     string `xml:"version,attr,omitempty"`
-	User        string `xml:"user,attr,omitempty"`
-	Password    string `xml:"password,attr,omitempty"`
-	Function    string `xml:"function,omitempty"`
-	AccountName string `xml:"accountName,omitempty"`
-	AccountPass string `xml:"accountPass,omitempty"`
-	CategoryId  int    `xml:"categoryID"`
+	Type       string `xml:"type,attr,omitempty"`
+	Version    string `xml:"version,attr,omitempty"`
+	User       string `xml:"user,attr,omitempty"`
+	Password   string `xml:"password,attr,omitempty"`
+	Function   string `xml:"function,omitempty"`
+	CategoryId int    `xml:"categoryID"`
 }
 
 // Return is to decode the xml response

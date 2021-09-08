@@ -16,19 +16,25 @@ import (
 	"github.com/jjideenschmiede/gohood/categories"
 )
 
+// CategoriesRequest is to structure the request data
+type CategoriesRequest struct {
+	AccountName string `xml:"accountName"`
+	AccountPass string `xml:"accountPass"`
+	CategoryId  int    `xml:"categoryID"`
+}
+
 // Categories are to get all child categories by id
-func Categories(body categories.Api) (categories.Return, error) {
+func Categories(request CategoriesRequest) (categories.Return, error) {
 
 	// Define body data
-	body.Type = "public"
-	body.Version = "2.0"
-	body.User = body.AccountName
-	body.Password = body.AccountPass
-	body.Function = "categoriesBrowse"
-
-	// Remove fields
-	body.AccountName = ""
-	body.AccountPass = ""
+	body := categories.Api{
+		"public",
+		"2.0",
+		request.AccountName,
+		request.AccountPass,
+		"categoriesBrowse",
+		request.CategoryId,
+	}
 
 	// Convert body
 	convert, err := xml.Marshal(body)
