@@ -142,3 +142,24 @@ if err != nil {
     fmt.Println(product)
 }
 ```
+
+## Browse categories
+
+With the following function it is possible to search in the categories of Hood.de.
+
+```go
+// Define request body
+body := gohood.categories.Api{
+    AccountName: "",
+    AccountPass: "",
+    CategoryId:  0,
+}
+
+// Get child categories
+categories, err := gohood.Categories(body)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(categories)
+}
+```
