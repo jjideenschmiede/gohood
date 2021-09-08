@@ -14,30 +14,28 @@ go get github.com/jjideenschmiede/gohood
 
 In order to add a new product, some data is needed. The whole thing can look like this.
 
-**Important! The password must be hashed.**
+**Important! The interface will hash the password automatically.**
 
 ```go
 // Create product body
-body := gohood.ProductsBody{
-    gohood.Api{
-        AccountName: "",
-        AccountPass: "",
-        Items: gohood.Items{
-            Item: []gohood.Item{},
-        },
+body := gohood.ProductsRequest{
+    AccountName: "",
+    AccountPass: "",
+    Items: gohood.ProductsRequestItems{
+        Item: []gohood.ProductsRequestItem{},
     },
 }
 
 // Add new item
-body.Api.Items.Item = append(body.Api.Items.Item, gohood.Item{
+body.Items.Item = append(body.Items.Item, gohood.ProductsRequestItem{
     ItemMode:    "shopProduct",
     CategoryId:  17055,
     ItemName:    "J&J Marketplace",
     Quantity:    250,
     Condition:   "new",
     Description: "Unsere Software, damit Sie ihr Warenwirtschaftssystem direkt mit einem Marktplatz verbinden können.",
-    Shipmethods: gohood.Shipmethods{
-        Shipmethod: []gohood.Shipmethod{},
+    Shipmethods: gohood.ProductsRequestShipmethods{
+        Shipmethod: []gohood.ProductsRequestShipmethod{},
     },
     Price:          "0,75",
     SalesTax:       "19",
@@ -48,28 +46,28 @@ body.Api.Items.Item = append(body.Api.Items.Item, gohood.Item{
     ProdCatId3:     "",
     ShortDesc:      "",
     IfIsSoldOut:    "",
-    ProductOptions: gohood.ProductOptions{},
+    ProductOptions: gohood.ProductsRequestProductOptions{},
     Ean:            "4251209995017",
     Isbn:           "",
     Mpn:            "JJMRTPL2021",
     Manufacturer:   "JJ Ideenschmiede GmbH",
     Weight:         "0,00",
-    Images: gohood.Images{
+    Images: gohood.ProductsRequestImages{
         ImageUrl: []string{},
     },
 })
 
 // Add shipping methods
-body.Api.Items.Item[0].Shipmethods.Shipmethod = append(body.Api.Items.Item[0].Shipmethods.Shipmethod, gohood.Shipmethod{
+body.Items.Item[0].Shipmethods.Shipmethod = append(body.Items.Item[0].Shipmethods.Shipmethod, gohood.ProductsRequestShipmethod{
     Name:  "DHLPacket_nat",
     Value: "5",
 })
 
 // Add an image
-body.Api.Items.Item[0].Images.ImageUrl = append(body.Api.Items.Item[0].Images.ImageUrl, "https://lh3.googleusercontent.com/glsgmb/AJtb4XCbjWmNDgametDQMVJo6Oh6Kok2GuoRs59ozCAQMmFl9G2f2PTq6PI0_9GZROeNzO0w13M5A91gArGZ6u-GGHsjPw=w304-h899-rw-no-sc0x00ffffff")
+body.Items.Item[0].Images.ImageUrl = append(body.Items.Item[0].Images.ImageUrl, "https://lh3.googleusercontent.com/glsgmb/AJtb4XCbjWmNDgametDQMVJo6Oh6Kok2GuoRs59ozCAQMmFl9G2f2PTq6PI0_9GZROeNzO0w13M5A91gArGZ6u-GGHsjPw=w304-h899-rw-no-sc0x00ffffff")
 
-// Add a new product
-product, err := gohood.AddProduct(body)
+// Create a new product
+product, err := gohood.CreateProduct(body)
 if err != nil {
     fmt.Println(err)
 } else {
@@ -82,28 +80,26 @@ if err != nil {
 In order to update a product, the ID of the product is required. Otherwise you can use the entire data identically to the anlgegen of a product.
 
 ```go
-// Create product body
-body := gohood.ProductsBody{
-    gohood.Api{
-        AccountName: "",
-        AccountPass: "",
-        Items: gohood.Items{
-            Item: []gohood.Item{},
-        },
+// Update product body
+body := gohood.ProductsRequest{
+    AccountName: "",
+    AccountPass: "",
+    Items: gohood.ProductsRequestItems{
+        Item: []gohood.ProductsRequestItem{},
     },
 }
 
 // Add new item
-body.Api.Items.Item = append(body.Api.Items.Item, gohood.Item{
-    ItemId:      12321873,
+body.Items.Item = append(body.Items.Item, gohood.ProductsRequestItem{
+    ItemId:      95992004,
     ItemMode:    "shopProduct",
     CategoryId:  17055,
     ItemName:    "J&J Marketplace",
     Quantity:    250,
     Condition:   "new",
     Description: "Unsere Software, damit Sie ihr Warenwirtschaftssystem direkt mit einem Marktplatz verbinden können.",
-    Shipmethods: gohood.Shipmethods{
-        Shipmethod: []gohood.Shipmethod{},
+    Shipmethods: gohood.ProductsRequestShipmethods{
+        Shipmethod: []gohood.ProductsRequestShipmethod{},
     },
     Price:          "0,75",
     SalesTax:       "19",
@@ -114,25 +110,25 @@ body.Api.Items.Item = append(body.Api.Items.Item, gohood.Item{
     ProdCatId3:     "",
     ShortDesc:      "",
     IfIsSoldOut:    "",
-    ProductOptions: gohood.ProductOptions{},
+    ProductOptions: gohood.ProductsRequestProductOptions{},
     Ean:            "4251209995017",
     Isbn:           "",
     Mpn:            "JJMRTPL2021",
     Manufacturer:   "JJ Ideenschmiede GmbH",
     Weight:         "0,00",
-    Images: gohood.Images{
+    Images: gohood.ProductsRequestImages{
         ImageUrl: []string{},
     },
 })
 
 // Add shipping methods
-body.Api.Items.Item[0].Shipmethods.Shipmethod = append(body.Api.Items.Item[0].Shipmethods.Shipmethod, gohood.Shipmethod{
+body.Items.Item[0].Shipmethods.Shipmethod = append(body.Items.Item[0].Shipmethods.Shipmethod, gohood.ProductsRequestShipmethod{
     Name:  "DHLPacket_nat",
     Value: "5",
 })
 
 // Add an image
-body.Api.Items.Item[0].Images.ImageUrl = append(body.Api.Items.Item[0].Images.ImageUrl, "https://lh3.googleusercontent.com/glsgmb/AJtb4XCbjWmNDgametDQMVJo6Oh6Kok2GuoRs59ozCAQMmFl9G2f2PTq6PI0_9GZROeNzO0w13M5A91gArGZ6u-GGHsjPw=w304-h899-rw-no-sc0x00ffffff")
+body.Items.Item[0].Images.ImageUrl = append(body.Items.Item[0].Images.ImageUrl, "https://lh3.googleusercontent.com/glsgmb/AJtb4XCbjWmNDgametDQMVJo6Oh6Kok2GuoRs59ozCAQMmFl9G2f2PTq6PI0_9GZROeNzO0w13M5A91gArGZ6u-GGHsjPw=w304-h899-rw-no-sc0x00ffffff")
 
 // Update a product
 product, err := gohood.UpdateProduct(body)
@@ -146,6 +142,8 @@ if err != nil {
 ## Browse categories
 
 With the following function it is possible to search in the categories of Hood.de.
+
+**Important! The interface will hash the password automatically.**
 
 ```go
 // Define request body
