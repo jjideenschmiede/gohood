@@ -149,7 +149,7 @@ With the following function it is possible to search in the categories of Hood.d
 
 ```go
 // Define request body
-body := gohood.categories.Api{
+body := gohood.CategoriesRequest{
     AccountName: "",
     AccountPass: "",
     CategoryId:  0,
