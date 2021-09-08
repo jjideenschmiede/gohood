@@ -46,6 +46,13 @@ type Item struct {
 	Shipmethods    Shipmethods    `xml:"shipmethods"`
 	Price          string         `xml:"price"`
 	SalesTax       string         `xml:"salesTax"`
+	PackagingSize  string         `xml:"packagingSize"`
+	PackagingUnit  string         `xml:"packagingUnit"`
+	ProdCatId      string         `xml:"prodCatID"`
+	ProdCatId2     string         `xml:"prodCatID2"`
+	ProdCatId3     string         `xml:"prodCatID3"`
+	ShortDesc      string         `xml:"shortDesc"`
+	IfIsSoldOut    string         `xml:"ifIsSoldOut"`
 	ProductOptions ProductOptions `xml:"productOptions"`
 	Ean            string         `xml:"ean"`
 	Isbn           string         `xml:"isbn"`
