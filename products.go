@@ -12,120 +12,108 @@
 package gohood
 
 import (
+	"crypto/md5"
 	"encoding/xml"
+	"fmt"
+	"github.com/jjideenschmiede/gohood/products"
 )
 
-// ProductsBody is to structure the data
-type ProductsBody struct {
-	Api Api `xml:"api"`
+// ProductsRequest is to structure the data
+type ProductsRequest struct {
+	AccountName string               `xml:"accountName"`
+	AccountPass string               `xml:"accountPass"`
+	Items       ProductsRequestItems `xml:"items"`
 }
 
-type Api struct {
-	Type        string `xml:"type,attr,omitempty"`
-	Version     string `xml:"version,attr,omitempty"`
-	User        string `xml:"user,attr,omitempty"`
-	Password    string `xml:"password,attr,omitempty"`
-	Function    string `xml:"function,omitempty"`
-	AccountName string `xml:"accountName,omitempty"`
-	AccountPass string `xml:"accountPass,omitempty"`
-	Items       Items  `xml:"items,omitempty"`
+type ProductsRequestItems struct {
+	Item []ProductsRequestItem `xml:"item"`
 }
 
-type Items struct {
-	Item []Item `xml:"item"`
+type ProductsRequestItem struct {
+	ItemId         int                           `xml:"itemID,omitempty"`
+	ItemMode       string                        `xml:"itemMode"`
+	CategoryId     int                           `xml:"categoryID"`
+	ItemName       string                        `xml:"itemName"`
+	Quantity       int                           `xml:"quantity"`
+	Condition      string                        `xml:"condition"`
+	Description    string                        `xml:"description"`
+	Shipmethods    ProductsRequestShipmethods    `xml:"shipmethods"`
+	Price          string                        `xml:"price"`
+	SalesTax       string                        `xml:"salesTax"`
+	PackagingSize  string                        `xml:"packagingSize"`
+	PackagingUnit  string                        `xml:"packagingUnit"`
+	ProdCatId      string                        `xml:"prodCatID"`
+	ProdCatId2     string                        `xml:"prodCatID2"`
+	ProdCatId3     string                        `xml:"prodCatID3"`
+	ShortDesc      string                        `xml:"shortDesc"`
+	IfIsSoldOut    string                        `xml:"ifIsSoldOut"`
+	ProductOptions ProductsRequestProductOptions `xml:"productOptions"`
+	Ean            string                        `xml:"ean"`
+	Isbn           string                        `xml:"isbn"`
+	Mpn            string                        `xml:"mpn"`
+	Manufacturer   string                        `xml:"manufacturer"`
+	Weight         string                        `xml:"weight"`
+	Images         ProductsRequestImages         `xml:"images"`
 }
 
-type Item struct {
-	ItemId         int            `xml:"itemID,omitempty"`
-	ItemMode       string         `xml:"itemMode"`
-	CategoryId     int            `xml:"categoryID"`
-	ItemName       string         `xml:"itemName"`
-	Quantity       int            `xml:"quantity"`
-	Condition      string         `xml:"condition"`
-	Description    string         `xml:"description"`
-	Shipmethods    Shipmethods    `xml:"shipmethods"`
-	Price          string         `xml:"price"`
-	SalesTax       string         `xml:"salesTax"`
-	PackagingSize  string         `xml:"packagingSize"`
-	PackagingUnit  string         `xml:"packagingUnit"`
-	ProdCatId      string         `xml:"prodCatID"`
-	ProdCatId2     string         `xml:"prodCatID2"`
-	ProdCatId3     string         `xml:"prodCatID3"`
-	ShortDesc      string         `xml:"shortDesc"`
-	IfIsSoldOut    string         `xml:"ifIsSoldOut"`
-	ProductOptions ProductOptions `xml:"productOptions"`
-	Ean            string         `xml:"ean"`
-	Isbn           string         `xml:"isbn"`
-	Mpn            string         `xml:"mpn"`
-	Manufacturer   string         `xml:"manufacturer"`
-	Weight         string         `xml:"weight"`
-	Images         Images         `xml:"images"`
+type ProductsRequestShipmethods struct {
+	Shipmethod []ProductsRequestShipmethod `xml:"shipmethod"`
 }
 
-type Shipmethods struct {
-	Shipmethod []Shipmethod `xml:"shipmethod"`
-}
-
-type Shipmethod struct {
+type ProductsRequestShipmethod struct {
 	Name  string `xml:"name,attr"`
 	Value string `xml:"value"`
 }
 
-type ProductOptions struct {
-	ProductOption []ProductOption `xml:"productOption"`
+type ProductsRequestProductOptions struct {
+	ProductOption []ProductsRequestProductOption `xml:"productOption"`
 }
 
-type ProductOption struct {
-	OptionPrice      string        `xml:"optionPrice"`
-	OptionQuantity   int           `xml:"optionQuantity"`
-	OptionItemNumber int           `xml:"optionItemNumber"`
-	Mpn              string        `xml:"mpn"`
-	Ean              string        `xml:"ean"`
-	PackagingSize    string        `xml:"PackagingSize"`
-	OptionsDetails   OptionDetails `xml:"optionDetails"`
+type ProductsRequestProductOption struct {
+	OptionPrice      string                       `xml:"optionPrice"`
+	OptionQuantity   int                          `xml:"optionQuantity"`
+	OptionItemNumber int                          `xml:"optionItemNumber"`
+	Mpn              string                       `xml:"mpn"`
+	Ean              string                       `xml:"ean"`
+	PackagingSize    string                       `xml:"PackagingSize"`
+	OptionsDetails   ProductsRequestOptionDetails `xml:"optionDetails"`
 }
 
-type OptionDetails struct {
-	NameValueList []NameValueList `xml:"nameValueList"`
+type ProductsRequestOptionDetails struct {
+	NameValueList []ProductsRequestNameValueList `xml:"nameValueList"`
 }
 
-type NameValueList struct {
+type ProductsRequestNameValueList struct {
 	Name  string `xml:"name"`
 	Value string `xml:"value"`
 }
 
-type Images struct {
+type ProductsRequestImages struct {
 	ImageUrl []string `xml:"imageURL"`
 }
 
-// ProductsReturn is to decode the xml response
-type ProductsReturn struct {
-	XmlName xml.Name           `xml:"response"`
-	Item    ProductsReturnItem `xml:"item"`
-}
-
-type ProductsReturnItem struct {
-	XmlName     xml.Name `xml:"item"`
-	ReferenceId int      `xml:"referenceID"`
-	Status      string   `xml:"status"`
-	Costs       int      `xml:"costs"`
-	ItemId      int      `xml:"itemID"`
-}
-
 // AddProduct are to set a new product
-func AddProduct(body ProductsBody) (ProductsReturn, error) {
+func AddProduct(request ProductsRequest) (products.Return, error) {
+
+	// Hash the password
+	hash := fmt.Sprintf("%x", md5.Sum([]byte(request.AccountPass)))
 
 	// Define body data
-	body.Api.Type = "public"
-	body.Api.Version = "2.0"
-	body.Api.User = body.Api.AccountName
-	body.Api.Password = body.Api.AccountPass
-	body.Api.Function = "itemInsert"
+	body := products.Api{
+		"public",
+		"2.0",
+		request.AccountName,
+		hash,
+		"itemInsert",
+		request.AccountName,
+		hash,
+		request.Items,
+	}
 
 	// Convert body
-	convert, err := xml.Marshal(body.Api)
+	convert, err := xml.Marshal(body)
 	if err != nil {
-		return ProductsReturn{}, err
+		return products.Return{}, err
 	}
 
 	// Config new request
@@ -134,18 +122,18 @@ func AddProduct(body ProductsBody) (ProductsReturn, error) {
 	// Send new request
 	response, err := c.Send()
 	if err != nil {
-		return ProductsReturn{}, err
+		return products.Return{}, err
 	}
 
 	// Close request body
 	defer response.Body.Close()
 
 	// Decode data
-	var decode ProductsReturn
+	var decode products.Return
 
 	err = xml.NewDecoder(response.Body).Decode(&decode)
 	if err != nil {
-		return ProductsReturn{}, err
+		return products.Return{}, err
 	}
 
 	// Return data
@@ -154,19 +142,27 @@ func AddProduct(body ProductsBody) (ProductsReturn, error) {
 }
 
 // UpdateProduct is to update a product
-func UpdateProduct(body ProductsBody) (ProductsReturn, error) {
+func UpdateProduct(request ProductsRequest) (products.Return, error) {
+
+	// Hash the password
+	hash := fmt.Sprintf("%x", md5.Sum([]byte(request.AccountPass)))
 
 	// Define body data
-	body.Api.Type = "public"
-	body.Api.Version = "2.0"
-	body.Api.User = body.Api.AccountName
-	body.Api.Password = body.Api.AccountPass
-	body.Api.Function = "itemUpdate"
+	body := products.Api{
+		"public",
+		"2.0",
+		request.AccountName,
+		hash,
+		"itemUpdate",
+		request.AccountName,
+		hash,
+		request.Items,
+	}
 
 	// Convert body
-	convert, err := xml.Marshal(body.Api)
+	convert, err := xml.Marshal(body)
 	if err != nil {
-		return ProductsReturn{}, err
+		return products.Return{}, err
 	}
 
 	// Config new request
@@ -175,18 +171,18 @@ func UpdateProduct(body ProductsBody) (ProductsReturn, error) {
 	// Send new request
 	response, err := c.Send()
 	if err != nil {
-		return ProductsReturn{}, err
+		return products.Return{}, err
 	}
 
 	// Close request body
 	defer response.Body.Close()
 
 	// Decode data
-	var decode ProductsReturn
+	var decode products.Return
 
 	err = xml.NewDecoder(response.Body).Decode(&decode)
 	if err != nil {
-		return ProductsReturn{}, err
+		return products.Return{}, err
 	}
 
 	// Return data
