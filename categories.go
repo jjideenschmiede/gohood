@@ -12,7 +12,9 @@
 package gohood
 
 import (
+	"crypto/md5"
 	"encoding/xml"
+	"fmt"
 	"github.com/jjideenschmiede/gohood/categories"
 )
 
@@ -26,12 +28,15 @@ type CategoriesRequest struct {
 // Categories are to get all child categories by id
 func Categories(request CategoriesRequest) (categories.Return, error) {
 
+	// Hash the password
+	hash := fmt.Sprintf("%x", md5.Sum([]byte(request.AccountPass)))
+
 	// Define body data
 	body := categories.Api{
 		"public",
 		"2.0",
 		request.AccountName,
-		request.AccountPass,
+		hash,
 		"categoriesBrowse",
 		request.CategoryId,
 	}
