@@ -26,9 +26,9 @@ type Api struct {
 	User        string `xml:"user,attr,omitempty"`
 	Password    string `xml:"password,attr,omitempty"`
 	Function    string `xml:"function,omitempty"`
-	AccountName string `xml:"accountName"`
-	AccountPass string `xml:"accountPass"`
-	Items       Items  `xml:"items"`
+	AccountName string `xml:"accountName,omitempty"`
+	AccountPass string `xml:"accountPass,omitempty"`
+	Items       Items  `xml:"items,omitempty"`
 }
 
 type Items struct {
@@ -100,7 +100,7 @@ type Images struct {
 
 // ProductsReturn is to decode the xml response
 type ProductsReturn struct {
-	XmlName xml.Name           `xml:"xml_name"`
+	XmlName xml.Name           `xml:"response"`
 	Item    ProductsReturnItem `xml:"item"`
 }
 
