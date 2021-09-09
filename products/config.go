@@ -36,6 +36,7 @@ type ReturnItem struct {
 	XmlName     xml.Name `xml:"item"`
 	ReferenceId int      `xml:"referenceID"`
 	Status      string   `xml:"status"`
-	Costs       int      `xml:"costs"`
-	ItemId      int      `xml:"itemID"`
+	Costs       int      `xml:"costs,omitempty"`
+	ItemId      int      `xml:"itemID,omitempty"`
+	Message     string   `xml:"message,omitempty"`
 }
