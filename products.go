@@ -30,30 +30,31 @@ type ProductsRequestItems struct {
 }
 
 type ProductsRequestItem struct {
-	ItemId         int                           `xml:"itemID,omitempty"`
-	ItemMode       string                        `xml:"itemMode"`
-	CategoryId     int                           `xml:"categoryID"`
-	ItemName       string                        `xml:"itemName"`
-	Quantity       int                           `xml:"quantity"`
-	Condition      string                        `xml:"condition"`
-	Description    string                        `xml:"description"`
-	Shipmethods    ProductsRequestShipmethods    `xml:"shipmethods"`
-	Price          string                        `xml:"price"`
-	SalesTax       string                        `xml:"salesTax"`
-	PackagingSize  string                        `xml:"packagingSize"`
-	PackagingUnit  string                        `xml:"packagingUnit"`
-	ProdCatId      string                        `xml:"prodCatID"`
-	ProdCatId2     string                        `xml:"prodCatID2"`
-	ProdCatId3     string                        `xml:"prodCatID3"`
-	ShortDesc      string                        `xml:"shortDesc"`
-	IfIsSoldOut    string                        `xml:"ifIsSoldOut"`
-	ProductOptions ProductsRequestProductOptions `xml:"productOptions"`
-	Ean            string                        `xml:"ean"`
-	Isbn           string                        `xml:"isbn"`
-	Mpn            string                        `xml:"mpn"`
-	Manufacturer   string                        `xml:"manufacturer"`
-	Weight         string                        `xml:"weight"`
-	Images         ProductsRequestImages         `xml:"images"`
+	ItemId            int                                     `xml:"itemID,omitempty"`
+	ItemMode          string                                  `xml:"itemMode"`
+	CategoryId        int                                     `xml:"categoryID"`
+	ItemName          string                                  `xml:"itemName"`
+	Quantity          int                                     `xml:"quantity"`
+	Condition         string                                  `xml:"condition"`
+	Description       string                                  `xml:"description"`
+	Shipmethods       ProductsRequestShipmethods              `xml:"shipmethods"`
+	Price             string                                  `xml:"price"`
+	SalesTax          string                                  `xml:"salesTax"`
+	PackagingSize     string                                  `xml:"packagingSize"`
+	PackagingUnit     string                                  `xml:"packagingUnit"`
+	ProdCatId         string                                  `xml:"prodCatID"`
+	ProdCatId2        string                                  `xml:"prodCatID2"`
+	ProdCatId3        string                                  `xml:"prodCatID3"`
+	ShortDesc         string                                  `xml:"shortDesc"`
+	IfIsSoldOut       string                                  `xml:"ifIsSoldOut"`
+	ProductProperties ProductsRequestProductProductProperties `xml:"productProperties"`
+	ProductOptions    ProductsRequestProductOptions           `xml:"productOptions"`
+	Ean               string                                  `xml:"ean"`
+	Isbn              string                                  `xml:"isbn"`
+	Mpn               string                                  `xml:"mpn"`
+	Manufacturer      string                                  `xml:"manufacturer"`
+	Weight            string                                  `xml:"weight"`
+	Images            ProductsRequestImages                   `xml:"images"`
 }
 
 type ProductsRequestShipmethods struct {
@@ -62,6 +63,15 @@ type ProductsRequestShipmethods struct {
 
 type ProductsRequestShipmethod struct {
 	Name  string `xml:"name,attr"`
+	Value string `xml:"value"`
+}
+
+type ProductsRequestProductProductProperties struct {
+	NameValueList []roductsRequestProductNameValueList `xml:"nameValueList"`
+}
+
+type roductsRequestProductNameValueList struct {
+	Name  string `xml:"name"`
 	Value string `xml:"value"`
 }
 
