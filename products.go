@@ -67,10 +67,10 @@ type ProductsRequestShipmethod struct {
 }
 
 type ProductsRequestProductProductProperties struct {
-	NameValueList []roductsRequestProductNameValueList `xml:"nameValueList"`
+	NameValueList []ProductsRequestProductNameValueList `xml:"nameValueList"`
 }
 
-type roductsRequestProductNameValueList struct {
+type ProductsRequestProductNameValueList struct {
 	Name  string `xml:"name"`
 	Value string `xml:"value"`
 }
